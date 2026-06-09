@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Quản lý Đoàn — Đoàn vào</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4f2ea; --card:#fffdf8; --ink:#1d1d18; --muted:#6c6b61;
+    --accent:#14543e; --accent-2:#1c6e51; --accent-soft:#e8efe9;
+    --line:#dedacd; --line-2:#eceade; --danger:#a23a30; --amber:#9a6a14;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Be Vietnam Pro',system-ui,sans-serif;
+    background:
+      radial-gradient(1200px 600px at 100% -10%, #fbfaf4, transparent),
+      var(--paper);
+    color:var(--ink);line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:34px 22px 80px}
+  header.top{display:flex;align-items:center;justify-content:space-between;gap:16px;
+    padding-bottom:18px;border-bottom:1px solid var(--line);margin-bottom:22px;
+    animation:rise .5s ease both}
+  .brand{display:flex;align-items:center;gap:13px}
+  .seal{width:46px;height:46px;border-radius:12px;background:var(--accent);color:#fff;
+    display:grid;place-items:center;font-family:'Lora',serif;font-weight:600;font-size:20px;
+    box-shadow:0 6px 18px rgba(20,84,62,.22)}
+  h1{font-family:'Lora',serif;font-weight:600;font-size:21px;letter-spacing:-.2px}
+  .sub{color:var(--muted);font-size:13px;margin-top:1px}
+
+  .branch{display:flex;gap:8px;margin-bottom:20px;animation:rise .5s .05s ease both}
+  .branch button{font:inherit;font-size:13.5px;font-weight:500;padding:7px 16px;border-radius:999px;
+    border:1px solid var(--line);background:var(--card);color:var(--muted);cursor:pointer;transition:.15s}
+  .branch button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .branch button.soon{opacity:.55;cursor:not-allowed}
+  .branch button.soon::after{content:" · sắp có";font-size:11px}
+
+  .tabs{display:flex;gap:4px;background:var(--line-2);padding:4px;border-radius:12px;width:max-content;margin-bottom:22px;animation:rise .5s .1s ease both}
+  .tabs button{font:inherit;font-size:13.5px;font-weight:500;padding:8px 18px;border:0;border-radius:9px;background:transparent;color:var(--muted);cursor:pointer;transition:.15s}
+  .tabs button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.07)}
+  .tabs .cnt{display:inline-block;min-width:18px;font-size:11px;background:var(--accent-soft);color:var(--accent);border-radius:999px;padding:0 6px;margin-left:6px}
+
+  /* FORM */
+  form{animation:rise .45s .12s ease both}
+  .sec{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:20px 22px;margin-bottom:14px}
+  .sec-head{display:flex;align-items:center;gap:11px;margin-bottom:16px}
+  .num{width:26px;height:26px;border-radius:8px;background:var(--accent-soft);color:var(--accent);
+    display:grid;place-items:center;font-size:13px;font-weight:600;flex:none}
+  .sec-title{font-family:'Lora',serif;font-size:16px;font-weight:600}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 18px}
+  .full{grid-column:1/-1}
+  label{display:block;font-size:13px;font-weight:500;margin-bottom:5px;color:#3a3a33}
+  label .req{color:var(--danger)}
+  .hint{font-size:11.5px;color:var(--muted);font-weight:400;margin-left:4px}
+  input,select,textarea{width:100%;font:inherit;font-size:14px;padding:9px 11px;border:1px solid var(--line);
+    border-radius:9px;background:#fff;color:var(--ink);transition:.15s}
+  input:focus,select:focus,textarea:focus{outline:0;border-color:var(--accent-2);box-shadow:0 0 0 3px rgba(28,110,81,.13)}
+  textarea{resize:vertical;min-height:70px}
+  select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236c6b61' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;padding-right:30px}
+  .file{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .file input[type=file]{font-size:12.5px;padding:7px;background:#fbfaf4}
+  .filenote{font-size:11.5px;color:var(--amber)}
+  .keepfile{font-size:12px;color:var(--accent);background:var(--accent-soft);padding:3px 9px;border-radius:7px}
+  .subgroup{border-left:2px solid var(--line-2);padding-left:15px;margin-left:2px}
+
+  .bar{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
+  .btn{font:inherit;font-size:14px;font-weight:600;padding:11px 22px;border-radius:10px;border:1px solid transparent;cursor:pointer;transition:.15s}
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-primary:hover{background:var(--accent-2)}
+  .btn-ghost{background:transparent;border-color:var(--line);color:var(--muted)}
+  .btn-ghost:hover{background:#fff}
+
+  /* TRA CỨU */
+  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+  .searchbox{position:relative;flex:1;min-width:240px}
+  .searchbox svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)}
+  .searchbox input{padding-left:36px}
+  .filters select{width:auto;min-width:150px}
+  table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;font-size:13.5px}
+  thead th{text-align:left;font-weight:600;font-size:12px;color:var(--muted);background:#faf8f1;padding:11px 13px;border-bottom:1px solid var(--line);white-space:nowrap}
+  tbody td{padding:11px 13px;border-bottom:1px solid var(--line-2);vertical-align:top}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr:hover{background:#faf9f3}
+  .badge{display:inline-block;font-size:11.5px;padding:2px 9px;border-radius:999px;border:1px solid}
+  .b-cap{background:#eef3f0;color:var(--accent);border-color:#d4e2da}
+  .b-nd{background:#f4efe4;color:var(--amber);border-color:#e6dcc4}
+  .iconbtn{border:0;background:transparent;cursor:pointer;color:var(--muted);padding:5px;border-radius:7px;transition:.15s}
+  .iconbtn:hover{background:var(--accent-soft);color:var(--accent)}
+  .iconbtn.del:hover{background:#f6e7e4;color:var(--danger)}
+  .empty{text-align:center;padding:54px 20px;color:var(--muted);font-size:14px}
+  .empty svg{opacity:.4;margin-bottom:10px}
+
+  /* MODAL */
+  .modal{position:fixed;inset:0;background:rgba(29,29,24,.42);display:none;align-items:flex-start;justify-content:center;padding:30px 16px;z-index:50;overflow-y:auto}
+  .modal.show{display:flex}
+  .sheet{background:var(--card);border-radius:16px;width:100%;max-width:600px;margin:auto;overflow:hidden;animation:pop .2s ease}
+  .sheet-h{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--line)}
+  .sheet-h h3{font-family:'Lora',serif;font-size:17px;font-weight:600}
+  .sheet-b{padding:18px 20px}
+  .dl{display:grid;grid-template-columns:150px 1fr;gap:9px 14px;font-size:13.5px}
+  .dl dt{color:var(--muted)}
+  .dl dd{color:var(--ink);font-weight:500}
+  .dl a{color:var(--accent);text-decoration:none;font-weight:500}
+  .dl a:hover{text-decoration:underline}
+  .grouprow{grid-column:1/-1;font-family:'Lora',serif;color:var(--accent);font-weight:600;font-size:13px;margin-top:6px}
+  .confirm .sheet{max-width:380px}
+  .footnote{font-size:11.5px;color:var(--muted);margin-top:18px;line-height:1.6}
+
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  @keyframes pop{from{opacity:0;transform:translateY(8px) scale(.99)}to{opacity:1;transform:none}}
+  @media(max-width:620px){.grid{grid-template-columns:1fr}.wrap{padding:24px 16px 60px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <div class="seal">Đ</div>
+      <div>
+        <h1>Quản lý Đoàn</h1>
+        <div class="sub">Lưu trữ &amp; tra cứu thông tin đoàn theo thời gian</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="branch">
+    <button class="on">Đoàn vào</button>
+    <button class="soon" disabled>Đoàn ra</button>
+  </div>
+
+  <div class="tabs">
+    <button id="tabNhap" class="on" onclick="switchTab('nhap')">Nhập liệu</button>
+    <button id="tabTra" onclick="switchTab('tra')">Tra cứu<span class="cnt" id="count">0</span></button>
+  </div>
+
+  <!-- ============ NHẬP LIỆU ============ -->
+  <form id="form" autocomplete="off">
+    <div class="sec">
+      <div class="sec-head"><div class="num">1</div><div class="sec-title">Thời gian</div></div>
+      <div class="grid">
+        <div><label>Ngày <span class="req">*</span><span class="hint">(dd-mm-yyyy)</span></label>
+          <input type="date" id="f_thoiGian" required></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><div class="num">2</div><div class="sec-title">Danh nghĩa đoàn</div></div>
+      <div class="grid">
+        <div><label>Danh nghĩa đoàn <span class="req">*</span></label>
+          <input type="text" id="f_danhNghia" required placeholder="Tên / danh nghĩa của đoàn"></div>
+        <div><label>Cấp</label>
+          <select id="f_cap"><option value="">— Chọn —</option><option>A</option><option>B</option><option>C</option></select></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><div class="num">3</div><div class="sec-title">Trưởng đoàn</div></div>
+      <div class="grid subgroup">
+        <div><label>Họ &amp; tên</label><input type="text" id="f_td_hoTen"></div>
+        <div><label>Cơ quan / Tổ chức</label><input type="text" id="f_td_coQuan"></div>
+        <div class="full"><label>Lý lịch <span class="hint">(file)</span></label>
+          <div class="file"><input type="file" id="f_td_lyLich"><span class="keepfile" id="keep_td_lyLich" style="display:none"></span></div></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><div class="num">4</div><div class="sec-title">Thành phần đoàn</div></div>
+      <div class="grid subgroup">
+        <div><label>Số người</label><input type="number" id="f_soNguoi" min="0" placeholder="0"></div>
+        <div class="full"><label>Danh sách thành viên đoàn <span class="hint">(file)</span></label>
+          <div class="file"><input type="file" id="f_dsThanhVien"><span class="keepfile" id="keep_dsThanhVien" style="display:none"></span></div></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><div class="num">5</div><div class="sec-title">Đơn vị chuẩn bị &amp; tiếp đón</div></div>
+      <div class="grid">
+        <div><label>Đơn vị chuẩn bị <span class="hint">(gõ để tìm)</span></label>
+          <input type="text" id="f_donViChuanBi" list="dvList" placeholder="Tên đơn vị trong HV">
+          <datalist id="dvList"></datalist></div>
+        <div><label>Chủ trì tiếp (tên)</label><input type="text" id="f_chuTriTiep"></div>
+        <div class="full"><label>Nội dung</label>
+          <select id="f_noiDung"><option value="">— Chọn —</option>
+            <option>Tiếp xã giao</option><option>Làm việc</option><option>Toạ đàm/Hội nghị, hội thảo</option></select></div>
+      </div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><div class="num">6</div><div class="sec-title">Chương trình làm việc</div></div>
+      <div class="grid"><div class="full"><div class="file"><input type="file" id="f_chuongTrinh"><span class="keepfile" id="keep_chuongTrinh" style="display:none"></span></div></div></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><div class="num">7</div><div class="sec-title">Hình ảnh</div></div>
+      <div class="grid"><div class="full"><div class="file"><input type="file" id="f_hinhAnh" accept="image/*" multiple><span class="keepfile" id="keep_hinhAnh" style="display:none"></span></div></div></div>
+    </div>
+
+    <div class="sec">
+      <div class="sec-head"><div class="num">8</div><div class="sec-title">Hồ sơ</div></div>
+      <div class="grid"><div class="full"><div class="file"><input type="file" id="f_hoSo"><span class="keepfile" id="keep_hoSo" style="display:none"></span></div></div></div>
+    </div>
+
+    <div class="bar">
+      <button type="button" class="btn btn-ghost" onclick="resetForm()">Làm mới</button>
+      <button type="submit" class="btn btn-primary" id="submitBtn">Lưu đoàn vào</button>
+    </div>
+    <p class="footnote">
+      * Bản prototype: file dưới ~600KB được lưu kèm để tải lại được; file lớn (ảnh/PDF nặng) hiện chỉ lưu tên — khi nối backend (Supabase Storage) sẽ lưu nguyên file.
+      Dữ liệu hiện lưu trong trình duyệt; bản multi-user thật sẽ chuyển sang database dùng chung.
+    </p>
+  </form>
+
+  <!-- ============ TRA CỨU ============ -->
+  <div id="traView" style="display:none">
+    <div class="filters">
+      <div class="searchbox">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="q" placeholder="Tìm theo danh nghĩa, trưởng đoàn, đơn vị, người chủ trì…" oninput="renderList()">
+      </div>
+      <select id="fCap" onchange="renderList()"><option value="">Mọi cấp</option><option>A</option><option>B</option><option>C</option></select>
+      <select id="fNoiDung" onchange="renderList()"><option value="">Mọi nội dung</option><option>Tiếp xã giao</option><option>Làm việc</option><option>Toạ đàm/Hội nghị, hội thảo</option></select>
+    </div>
+    <div id="listWrap"></div>
+  </div>
+</div>
+
+<!-- Modal chi tiết -->
+<div class="modal" id="detailModal" onclick="if(event.target===this)closeModal('detailModal')">
+  <div class="sheet">
+    <div class="sheet-h"><h3>Chi tiết đoàn vào</h3>
+      <button class="iconbtn" onclick="closeModal('detailModal')"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+    <div class="sheet-b"><dl class="dl" id="detailBody"></dl></div>
+  </div>
+</div>
+
+<!-- Modal xác nhận xoá -->
+<div class="modal confirm" id="delModal" onclick="if(event.target===this)closeModal('delModal')">
+  <div class="sheet"><div class="sheet-b">
+    <h3 style="font-family:'Lora',serif;margin-bottom:6px">Xoá đoàn này?</h3>
+    <p style="color:var(--muted);font-size:13.5px;margin-bottom:18px" id="delName"></p>
+    <div class="bar" style="margin-top:0">
+      <button class="btn btn-ghost" onclick="closeModal('delModal')">Huỷ</button>
+      <button class="btn btn-primary" style="background:var(--danger)" id="delConfirmBtn">Xoá</button>
+    </div>
+  </div></div>
+</div>
+
+<script>
+/* ── Đơn vị chuẩn bị (mẫu — thay bằng danh sách đơn vị trong HV) ── */
+const UNITS = ["Phòng Hợp tác Quốc tế","Văn phòng Học viện","Phòng Đào tạo",
+  "Phòng Khoa học &amp; Công nghệ","Phòng Tổ chức Cán bộ","Khoa Quốc tế học","Trung tâm Thông tin – Thư viện"];
+
+/* ── Định nghĩa trường để render tra cứu/chi tiết ── */
+const FIELDS = [
+  {key:"thoiGian", label:"Thời gian", type:"date"},
+  {key:"danhNghia", label:"Danh nghĩa đoàn", type:"text"},
+  {key:"cap", label:"Cấp", type:"text"},
+  {group:"Trưởng đoàn"},
+  {key:"td_hoTen", label:"Họ & tên", type:"text"},
+  {key:"td_coQuan", label:"Cơ quan/Tổ chức", type:"text"},
+  {key:"td_lyLich", label:"Lý lịch", type:"file"},
+  {group:"Thành phần đoàn"},
+  {key:"soNguoi", label:"Số người", type:"text"},
+  {key:"dsThanhVien", label:"DS thành viên", type:"file"},
+  {group:"Tiếp đón"},
+  {key:"donViChuanBi", label:"Đơn vị chuẩn bị", type:"text"},
+  {key:"chuTriTiep", label:"Chủ trì tiếp", type:"text"},
+  {key:"noiDung", label:"Nội dung", type:"text"},
+  {group:"Tài liệu"},
+  {key:"chuongTrinh", label:"Chương trình làm việc", type:"file"},
+  {key:"hinhAnh", label:"Hình ảnh", type:"file", multiple:true},
+  {key:"hoSo", label:"Hồ sơ", type:"file"},
+];
+const FILE_FIELDS = [
+  {key:"td_lyLich"},{key:"dsThanhVien"},{key:"chuongTrinh"},
+  {key:"hinhAnh", multiple:true},{key:"hoSo"}
+];
+
+/* ── Lưu trữ: ưu tiên storage của Claude, fallback localStorage khi deploy ── */
+const KEY = "doanvao:list";
+const Store = {
+  async get(){
+    try{ if(window.storage){const r=await window.storage.get(KEY,true);return r?JSON.parse(r.value):[];} }catch(e){}
+    try{ const s=localStorage.getItem(KEY);return s?JSON.parse(s):[]; }catch(e){ return []; }
+  },
+  async set(list){
+    const v=JSON.stringify(list);
+    try{ if(window.storage){await window.storage.set(KEY,v,true);return true;} }catch(e){}
+    try{ localStorage.setItem(KEY,v);return true; }
+    catch(e){ alert("Dữ liệu quá lớn để lưu trong trình duyệt (file đính kèm nặng). Bản chính thức sẽ nối backend để khắc phục."); return false; }
+  }
+};
+
+let DATA = [];
+let editingId = null;
+let editingFiles = {};
+let pendingDel = null;
+
+/* ── Init ── */
+(async function(){
+  document.getElementById("dvList").innerHTML = UNITS.map(u=>`<option value="${u.replace(/&amp;/g,'&')}">`).join("");
+  DATA = await Store.get();
+  refreshCount();
+})();
+
+function switchTab(t){
+  const nhap=t==="nhap";
+  document.getElementById("form").style.display=nhap?"":"none";
+  document.getElementById("traView").style.display=nhap?"none":"";
+  document.getElementById("tabNhap").classList.toggle("on",nhap);
+  document.getElementById("tabTra").classList.toggle("on",!nhap);
+  if(!nhap) renderList();
+}
+function refreshCount(){ document.getElementById("count").textContent=DATA.length; }
+
+/* ── Đọc file ── */
+const FILE_LIMIT = 600*1024;
+function readOne(file){
+  return new Promise(res=>{
+    const m={name:file.name,size:file.size,type:file.type,data:null};
+    if(file.size<=FILE_LIMIT){const r=new FileReader();r.onload=()=>{m.data=r.result;res(m);};r.onerror=()=>res(m);r.readAsDataURL(file);}
+    else res(m);
+  });
+}
+async function readField(key,multiple){
+  const el=document.getElementById("f_"+key);
+  const files=[...el.files];
+  if(files.length===0) return editingId ? (editingFiles[key]??null) : null; // giữ file cũ khi sửa
+  const out=await Promise.all(files.map(readOne));
+  return multiple?out:out[0];
+}
+
+/* ── Submit ── */
+document.getElementById("form").addEventListener("submit",async e=>{
+  e.preventDefault();
+  const btn=document.getElementById("submitBtn"); btn.disabled=true; btn.textContent="Đang lưu…";
+  const rec={
+    id: editingId || (crypto.randomUUID?crypto.randomUUID():Date.now()+""+Math.random()),
+    createdAt: editingId ? (DATA.find(d=>d.id===editingId)?.createdAt||Date.now()) : Date.now(),
+  };
+  for(const f of FIELDS){ if(f.group||f.type==="file") continue; rec[f.key]=document.getElementById("f_"+f.key).value.trim(); }
+  for(const f of FILE_FIELDS){ rec[f.key]=await readField(f.key,f.multiple); }
+
+  if(editingId){ DATA=DATA.map(d=>d.id===editingId?rec:d); } else { DATA=[rec,...DATA]; }
+  await Store.set(DATA); refreshCount();
+  btn.disabled=false; btn.textContent=editingId?"Lưu đoàn vào":"Lưu đoàn vào";
+  resetForm();
+  switchTab("tra");
+});
+
+function resetForm(){
+  document.getElementById("form").reset();
+  editingId=null; editingFiles={};
+  document.querySelectorAll(".keepfile").forEach(s=>s.style.display="none");
+  document.getElementById("submitBtn").textContent="Lưu đoàn vào";
+}
+
+/* ── Tra cứu ── */
+function fmtDate(s){ if(!s)return"—"; const[y,m,d]=s.split("-"); return d&&m&&y?`${d}-${m}-${y}`:s; }
+function esc(s){ return String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+function renderList(){
+  const q=document.getElementById("q").value.trim().toLowerCase();
+  const cap=document.getElementById("fCap").value;
+  const nd=document.getElementById("fNoiDung").value;
+  const searchKeys=["danhNghia","td_hoTen","td_coQuan","donViChuanBi","chuTriTiep","noiDung","cap"];
+  const rows=DATA
+    .filter(r=>!cap||r.cap===cap)
+    .filter(r=>!nd||r.noiDung===nd)
+    .filter(r=>!q||searchKeys.some(k=>String(r[k]||"").toLowerCase().includes(q)))
+    .sort((a,b)=>b.createdAt-a.createdAt);
+
+  const wrap=document.getElementById("listWrap");
+  if(rows.length===0){
+    wrap.innerHTML=`<div class="empty"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5.5 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.5-6.5A2 2 0 0 0 16.8 4H7.2a2 2 0 0 0-1.7 1.5Z"/></svg>
+      <div>${DATA.length===0?"Chưa có đoàn vào nào. Sang tab Nhập liệu để thêm.":"Không tìm thấy đoàn nào khớp."}</div></div>`;
+    return;
+  }
+  wrap.innerHTML=`<table><thead><tr>
+    <th>Thời gian</th><th>Danh nghĩa đoàn</th><th>Cấp</th><th>Trưởng đoàn</th><th>Số người</th><th>Nội dung</th><th>Đơn vị chuẩn bị</th><th></th>
+  </tr></thead><tbody>${rows.map(r=>`<tr>
+    <td>${esc(fmtDate(r.thoiGian))}</td>
+    <td style="font-weight:600">${esc(r.danhNghia||"—")}</td>
+    <td>${r.cap?`<span class="badge b-cap">${esc(r.cap)}</span>`:"—"}</td>
+    <td>${esc(r.td_hoTen||"—")}</td>
+    <td>${esc(r.soNguoi||"—")}</td>
+    <td>${r.noiDung?`<span class="badge b-nd">${esc(r.noiDung)}</span>`:"—"}</td>
+    <td>${esc(r.donViChuanBi||"—")}</td>
+    <td style="white-space:nowrap;text-align:right">
+      <button class="iconbtn" title="Xem" onclick="openDetail('${r.id}')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg></button>
+      <button class="iconbtn" title="Sửa" onclick="editRec('${r.id}')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
+      <button class="iconbtn del" title="Xoá" onclick="askDel('${r.id}')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg></button>
+    </td></tr>`).join("")}</tbody></table>`;
+}
+
+function fileCell(v){
+  if(!v) return "—";
+  const arr=Array.isArray(v)?v:[v];
+  return arr.map(f=>f.data
+    ? `<a href="${f.data}" download="${esc(f.name)}">${esc(f.name)} ↓</a>`
+    : `${esc(f.name)} <span style="color:var(--amber);font-size:11px">(chưa lưu nội dung)</span>`).join("<br>");
+}
+function openDetail(id){
+  const r=DATA.find(d=>d.id===id); if(!r)return;
+  let html="";
+  for(const f of FIELDS){
+    if(f.group){ html+=`<div class="grouprow">${f.group}</div>`; continue; }
+    let val;
+    if(f.type==="file") val=fileCell(r[f.key]);
+    else if(f.type==="date") val=esc(fmtDate(r[f.key]));
+    else val=esc(r[f.key]||"—");
+    html+=`<dt>${f.label}</dt><dd>${val||"—"}</dd>`;
+  }
+  document.getElementById("detailBody").innerHTML=html;
+  openModal("detailModal");
+}
+
+function editRec(id){
+  const r=DATA.find(d=>d.id===id); if(!r)return;
+  editingId=id; editingFiles={};
+  for(const f of FIELDS){ if(f.group||f.type==="file")continue; const el=document.getElementById("f_"+f.key); if(el)el.value=r[f.key]||""; }
+  for(const f of FILE_FIELDS){
+    editingFiles[f.key]=r[f.key]||null;
+    const keep=document.getElementById("keep_"+f.key);
+    if(keep){ const v=r[f.key]; const arr=Array.isArray(v)?v:(v?[v]:[]);
+      if(arr.length){ keep.style.display=""; keep.textContent="Đang có: "+arr.map(x=>x.name).join(", ")+" (chọn file mới để thay)"; }
+      else keep.style.display="none"; }
+  }
+  document.getElementById("submitBtn").textContent="Cập nhật";
+  switchTab("nhap"); window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function askDel(id){ pendingDel=id; const r=DATA.find(d=>d.id===id);
+  document.getElementById("delName").textContent=`“${r?.danhNghia||"Không tên"}” sẽ bị xoá vĩnh viễn.`;
+  openModal("delModal"); }
+document.getElementById("delConfirmBtn").addEventListener("click",async()=>{
+  DATA=DATA.filter(d=>d.id!==pendingDel); await Store.set(DATA); refreshCount(); closeModal("delModal"); renderList();
+});
+
+function openModal(id){ document.getElementById(id).classList.add("show"); }
+function closeModal(id){ document.getElementById(id).classList.remove("show"); }
+</script>
+</body>
+</html>
