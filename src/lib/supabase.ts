@@ -12,9 +12,22 @@ export const supabase = createClient(url ?? "", key ?? "");
 
 export const FILES_BUCKET = "doan-files";
 
+// Sanitize tên file: bỏ dấu tiếng Việt + ký tự đặc biệt để khớp với
+// Supabase Storage key (chỉ cho a-z, 0-9, -, _, ., /).
+function sanitizeFileName(name: string): string {
+  return name
+    .normalize("NFD")                          // tách ký tự + dấu
+    .replace(/[̀-ͯ]/g, "")           // bỏ dấu thanh/dấu nguyên âm
+    .replace(/đ/g, "d").replace(/Đ/g, "D")     // đ -> d (NFD không tách)
+    .replace(/[^a-zA-Z0-9._-]+/g, "_")         // còn lại quy về _
+    .replace(/_+/g, "_")
+    .replace(/^_|_$/g, "");
+}
+
 // Upload 1 file lên Storage, trả về path. (Dùng cho các field type "file".)
 export async function uploadFile(file: File, folder = "doan-vao"): Promise<string> {
-  const path = `${folder}/${Date.now()}-${crypto.randomUUID()}-${file.name}`;
+  const safe = sanitizeFileName(file.name) || "file";
+  const path = `${folder}/${Date.now()}-${crypto.randomUUID()}-${safe}`;
   const { error } = await supabase.storage.from(FILES_BUCKET).upload(path, file);
   if (error) throw error;
   return path;
