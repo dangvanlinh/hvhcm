@@ -20,6 +20,23 @@ const NOI_DUNG_RA_OPTIONS = [
   "Nghiên cứu, khảo sát",
 ] as const;
 
+// Danh sách quốc gia (tiếng Việt) cho trường "Quốc gia đến công tác".
+const QUOC_GIA_OPTIONS = [
+  "Lào", "Campuchia", "Thái Lan", "Trung Quốc", "Nhật Bản", "Hàn Quốc",
+  "Singapore", "Malaysia", "Indonesia", "Philippines", "Myanmar", "Brunei",
+  "Đông Timor", "Ấn Độ", "Nga", "Hoa Kỳ", "Canada", "Anh", "Pháp", "Đức",
+  "Ý", "Tây Ban Nha", "Bồ Đào Nha", "Hà Lan", "Bỉ", "Thụy Sĩ", "Áo",
+  "Thụy Điển", "Na Uy", "Đan Mạch", "Phần Lan", "Ireland", "Ba Lan",
+  "Séc", "Slovakia", "Hungary", "Romania", "Bulgaria", "Hy Lạp", "Croatia",
+  "Ukraina", "Belarus", "Thổ Nhĩ Kỳ", "Israel", "Ả Rập Xê Út",
+  "Các Tiểu vương quốc Ả Rập Thống nhất", "Qatar", "Kuwait", "Iran", "Iraq",
+  "Jordan", "Liban", "Ai Cập", "Maroc", "Algeria", "Tunisia", "Nam Phi",
+  "Nigeria", "Kenya", "Ethiopia", "Tanzania", "Úc", "New Zealand",
+  "Brazil", "Argentina", "Chile", "Mexico", "Cuba", "Peru", "Colombia",
+  "Venezuela", "Pakistan", "Bangladesh", "Sri Lanka", "Nepal", "Mông Cổ",
+  "Kazakhstan", "Uzbekistan", "Azerbaijan", "Đài Loan (TQ)", "Hồng Kông (TQ)",
+] as const;
+
 // TODO: thay bằng danh sách đơn vị thật trong HV, hoặc lấy động từ bảng `don_vi`.
 const DON_VI_OPTIONS = [
   "Phòng Hợp tác Quốc tế",
@@ -66,7 +83,7 @@ export const DOAN_RA_CONFIG: EntityConfig = {
     },
 
     { key: "danhNghia", column: "danh_nghia", label: "Danh nghĩa / Tên đoàn", type: "text", section: 2, required: true, inTable: true, searchable: true, placeholder: "Tên đoàn ra" },
-    { key: "quocGiaCongTac", column: "quoc_gia_den_cong_tac", label: "Quốc gia đến công tác", type: "text", section: 2, inTable: true, searchable: true, placeholder: "Tên quốc gia" },
+    { key: "quocGiaCongTac", column: "quoc_gia_den_cong_tac", label: "Quốc gia đến công tác", type: "multi-search", section: 2, options: QUOC_GIA_OPTIONS, inTable: true, searchable: true, placeholder: "Gõ tên quốc gia rồi chọn (có thể chọn nhiều)" },
     { key: "cap", column: "cap", label: "Cấp", type: "select", section: 2, options: CAP_RA_OPTIONS, inTable: true, searchable: true, badge: "accent" },
 
     { key: "tdHoTen", column: "td_ho_ten", label: "Họ & tên", type: "text", section: 3, group: "Trưởng đoàn", inTable: true, searchable: true },

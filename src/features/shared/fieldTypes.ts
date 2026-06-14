@@ -8,6 +8,7 @@ export type FieldType =
   | "number"
   | "select"
   | "multi-select" // text[] — chọn nhiều từ options
+  | "multi-search" // text[] — gõ lọc từ options (datalist), chọn nhiều → chip
   | "search"       // text + datalist gợi ý
   | "multi-text"   // text[] — repeater dòng text tự do
   | "file";
@@ -54,6 +55,7 @@ export interface EntityConfig {
 export const isFileField = (f: FieldDef) => f.type === "file";
 export const isMultiCol = (f: FieldDef) =>
   f.type === "multi-select" ||
+  f.type === "multi-search" ||
   f.type === "multi-text" ||
   (f.type === "file" && !!f.multiple);
 

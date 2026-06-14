@@ -20,7 +20,7 @@ function emptyState(fields: FieldDef[]): State {
   const multi: Record<string, string[]> = {};
   for (const f of fields) {
     if (f.type === "date-range") range[f.key] = { from: "", to: "" };
-    else if (f.type === "multi-select" || f.type === "multi-text") multi[f.key] = [];
+    else if (f.type === "multi-select" || f.type === "multi-search" || f.type === "multi-text") multi[f.key] = [];
     else if (!isFileField(f)) text[f.key] = "";
   }
   return { text, range, multi, files: {}, kept: {} };
@@ -34,7 +34,7 @@ function stateFromRow(fields: FieldDef[], row: Row): State {
         from: row[f.column[0]] ?? "",
         to: row[f.column[1]] ?? "",
       };
-    } else if (f.type === "multi-select" || f.type === "multi-text") {
+    } else if (f.type === "multi-select" || f.type === "multi-search" || f.type === "multi-text") {
       const col = primaryColumn(f);
       s.multi[f.key] = Array.isArray(row[col]) ? row[col] : [];
     } else if (isFileField(f)) {
@@ -104,7 +104,7 @@ export default function EntityForm({
           const r = state.range[f.key];
           row[f.column[0]] = r.from || null;
           row[f.column[1]] = r.to || null;
-        } else if (f.type === "multi-select" || f.type === "multi-text") {
+        } else if (f.type === "multi-select" || f.type === "multi-search" || f.type === "multi-text") {
           const arr = state.multi[f.key].map((s) => s.trim()).filter(Boolean);
           row[primaryColumn(f)] = arr.length ? arr : null;
         } else if (isFileField(f)) {
@@ -227,6 +227,7 @@ function FieldRow({
     def.type === "file" ||
     def.type === "multi-text" ||
     def.type === "multi-select" ||
+    def.type === "multi-search" ||
     def.type === "date-range";
 
   return (
@@ -280,6 +281,8 @@ function FieldRow({
         </>
       ) : def.type === "multi-select" ? (
         <MultiSelect value={state.multi[def.key] ?? []} options={def.options ?? []} onChange={setMulti} />
+      ) : def.type === "multi-search" ? (
+        <MultiSearch idKey={def.key} value={state.multi[def.key] ?? []} options={def.options ?? []} onChange={setMulti} placeholder={def.placeholder} />
       ) : def.type === "multi-text" ? (
         <MultiText value={state.multi[def.key] ?? []} onChange={setMulti} placeholder={def.placeholder} />
       ) : def.type === "file" ? (
@@ -321,6 +324,65 @@ function MultiSelect({
           </button>
         );
       })}
+    </div>
+  );
+}
+
+function MultiSearch({
+  idKey,
+  value,
+  options,
+  onChange,
+  placeholder,
+}: {
+  idKey: string;
+  value: string[];
+  options: readonly string[];
+  onChange: (v: string[]) => void;
+  placeholder?: string;
+}) {
+  const [input, setInput] = useState("");
+  const available = options.filter((o) => !value.includes(o));
+  const add = (raw: string) => {
+    const match = options.find((x) => x.toLowerCase() === raw.trim().toLowerCase());
+    if (match && !value.includes(match)) onChange([...value, match]);
+    setInput("");
+  };
+  const remove = (o: string) => onChange(value.filter((x) => x !== o));
+  return (
+    <div className="space-y-2">
+      {value.length > 0 && (
+        <div className="flex flex-wrap gap-1.5">
+          {value.map((o) => (
+            <span key={o} className="inline-flex items-center gap-1 text-xs font-medium pl-2.5 pr-1.5 py-1 rounded-md bg-accent text-white">
+              {o}
+              <button type="button" onClick={() => remove(o)} className="hover:text-white/60" aria-label={`Bỏ ${o}`}>
+                <X size={13} />
+              </button>
+            </span>
+          ))}
+        </div>
+      )}
+      <input
+        list={`dl-ms-${idKey}`}
+        value={input}
+        onChange={(e) => {
+          const v = e.target.value;
+          if (options.some((x) => x === v)) add(v); // chọn từ danh sách → thêm ngay
+          else setInput(v);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            e.preventDefault();
+            add(input);
+          }
+        }}
+        className="w-full px-3 py-2.5 rounded-lg border border-line bg-white text-sm focus:outline-none focus:border-accent-2 focus:ring-2 focus:ring-accent-2/15"
+        placeholder={placeholder ?? "Gõ để tìm & chọn…"}
+      />
+      <datalist id={`dl-ms-${idKey}`}>
+        {available.map((o) => <option key={o} value={o} />)}
+      </datalist>
     </div>
   );
 }
