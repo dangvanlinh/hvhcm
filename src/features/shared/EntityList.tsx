@@ -3,6 +3,7 @@ import { Eye, Pencil, Trash2, Search, Inbox } from "lucide-react";
 import { supabase, signedUrl } from "../../lib/supabase";
 import type { EntityConfig, FieldDef } from "./fieldTypes";
 import { isFileField, primaryColumn } from "./fieldTypes";
+import { yearOptions } from "./years";
 
 type Row = Record<string, any>;
 
@@ -57,13 +58,13 @@ export default function EntityList({
   }, [config]);
 
   const years = useMemo(() => {
-    const set = new Set<string>();
+    const inData: number[] = [];
     for (const r of rows)
       for (const c of dateCols) {
         const v = r[c];
-        if (typeof v === "string" && v.length >= 4) set.add(v.slice(0, 4));
+        if (typeof v === "string" && v.length >= 4) inData.push(Number(v.slice(0, 4)));
       }
-    return [...set].sort((a, b) => b.localeCompare(a));
+    return yearOptions(inData);
   }, [rows, dateCols]);
 
   const filtered = useMemo(() => {
