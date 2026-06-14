@@ -53,6 +53,7 @@ export const DOAN_VAO_CONFIG: EntityConfig = {
 
     { key: "donViChuanBi", column: "don_vi_chuan_bi", label: "Đơn vị chuẩn bị", type: "search", section: 5, options: DON_VI_HV_OPTIONS, inTable: true, searchable: true, placeholder: "Gõ để tìm & chọn đơn vị" },
     { key: "chuTriTiep", column: "chu_tri_tiep", label: "Chủ trì tiếp (tên)", type: "text", section: 5, searchable: true },
+    { key: "chuTriChucDanh", column: "chu_tri_chuc_danh", label: "Chức danh", type: "text", section: 5, searchable: true, placeholder: "Chức danh người chủ trì" },
     { key: "noiDung", column: "noi_dung", label: "Nội dung", type: "select", section: 5, options: NOI_DUNG_OPTIONS, inTable: true, searchable: true, badge: "amber" },
 
     { key: "chuongTrinh", column: "chuong_trinh_path", label: "Chương trình làm việc", type: "file", section: 6 },

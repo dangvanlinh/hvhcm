@@ -39,6 +39,7 @@ create table if not exists public.doan_vao (
   ds_thanh_vien_path  text,
   don_vi_chuan_bi     text,
   chu_tri_tiep        text,
+  chu_tri_chuc_danh   text,
   noi_dung            noi_dung_tiep,
   chuong_trinh_path   text,
   hinh_anh_paths      text[],
@@ -51,6 +52,7 @@ create index if not exists doan_vao_created_at_idx on public.doan_vao (created_a
 
 -- Bổ sung cột cho bảng đã tồn tại (an toàn chạy lại nhiều lần)
 alter table public.doan_vao add column if not exists quoc_gia_den text;
+alter table public.doan_vao add column if not exists chu_tri_chuc_danh text;
 
 -- ── Bảng Đoàn ra ──────────────────────────────────────────────────────────
 create table if not exists public.doan_ra (

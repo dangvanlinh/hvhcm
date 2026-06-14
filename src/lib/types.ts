@@ -14,6 +14,7 @@ export interface DoanVao {
   ds_thanh_vien_path: string | null;
   don_vi_chuan_bi: string | null;
   chu_tri_tiep: string | null;
+  chu_tri_chuc_danh: string | null;
   noi_dung: string | null;
   chuong_trinh_path: string | null;
   hinh_anh_paths: string[] | null;
