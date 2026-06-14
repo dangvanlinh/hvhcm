@@ -38,7 +38,7 @@ export const DOAN_VAO_CONFIG: EntityConfig = {
     { key: "noiDung", column: "noi_dung", emptyLabel: "Mọi nội dung", options: NOI_DUNG_OPTIONS },
   ],
   fields: [
-    { key: "thoiGian", column: "thoi_gian", label: "Thời gian", type: "date", section: 1, required: true, inTable: true },
+    { key: "thoiGian", column: ["thoi_gian_tu", "thoi_gian_den"] as [string, string], label: "Thời gian (Từ → Đến)", type: "date-range", section: 1, required: true, inTable: true },
 
     { key: "danhNghia", column: "danh_nghia", label: "Danh nghĩa đoàn", type: "text", section: 2, required: true, inTable: true, searchable: true, placeholder: "Tên / danh nghĩa của đoàn" },
     { key: "quocGiaDen", column: "quoc_gia_den", label: "Quốc gia", type: "search", section: 2, options: QUOC_GIA_OPTIONS, inTable: true, searchable: true, placeholder: "Gõ để tìm & chọn quốc gia" },

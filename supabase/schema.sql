@@ -28,7 +28,9 @@ exception when duplicate_object then null; end $$;
 -- ── Bảng Đoàn vào ─────────────────────────────────────────────────────────
 create table if not exists public.doan_vao (
   id                  uuid primary key default gen_random_uuid(),
-  thoi_gian           date,
+  thoi_gian           date,          -- (cũ) giữ lại để tương thích dữ liệu trước đây
+  thoi_gian_tu        date,
+  thoi_gian_den       date,
   danh_nghia          text not null,
   quoc_gia_den        text,
   cap                 cap_doan,
@@ -53,6 +55,11 @@ create index if not exists doan_vao_created_at_idx on public.doan_vao (created_a
 -- Bổ sung cột cho bảng đã tồn tại (an toàn chạy lại nhiều lần)
 alter table public.doan_vao add column if not exists quoc_gia_den text;
 alter table public.doan_vao add column if not exists chu_tri_chuc_danh text;
+-- "Thời gian" Đoàn vào: chuyển sang khoảng (Từ → Đến) giống Đoàn ra; chép dữ liệu cũ vào cột "Từ".
+alter table public.doan_vao add column if not exists thoi_gian_tu date;
+alter table public.doan_vao add column if not exists thoi_gian_den date;
+update public.doan_vao set thoi_gian_tu = thoi_gian
+  where thoi_gian_tu is null and thoi_gian is not null;
 
 -- ── Bảng Đoàn ra ──────────────────────────────────────────────────────────
 create table if not exists public.doan_ra (

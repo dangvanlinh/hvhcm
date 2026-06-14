@@ -3,7 +3,8 @@
 
 export interface DoanVao {
   id: string;
-  thoi_gian: string | null;
+  thoi_gian_tu: string | null;
+  thoi_gian_den: string | null;
   danh_nghia: string;
   quoc_gia_den: string | null;
   cap: "A" | "B" | "C" | null;
