@@ -60,6 +60,7 @@ create table if not exists public.doan_ra (
   thoi_gian_den            date,
   -- 2. Danh nghĩa / Cấp
   danh_nghia               text not null,
+  quoc_gia_den_cong_tac    text,
   cap                      cap_doan_ra,
   -- 3. Trưởng đoàn
   td_ho_ten                text,
@@ -87,6 +88,9 @@ create table if not exists public.doan_ra (
 );
 
 create index if not exists doan_ra_created_at_idx on public.doan_ra (created_at desc);
+
+-- Bổ sung cột cho bảng đã tồn tại (an toàn chạy lại nhiều lần)
+alter table public.doan_ra add column if not exists quoc_gia_den_cong_tac text;
 
 -- ── (Tuỳ chọn) Danh mục đơn vị trong HV ────────────────────────────────────
 create table if not exists public.don_vi (

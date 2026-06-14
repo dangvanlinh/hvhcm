@@ -27,6 +27,7 @@ export interface DoanRa {
   thoi_gian_tu: string | null;
   thoi_gian_den: string | null;
   danh_nghia: string;
+  quoc_gia_den_cong_tac: string | null;
   cap: "Cấp Thứ trưởng" | "Cấp Vụ - Viện" | null;
   td_ho_ten: string | null;
   td_co_quan: string | null;

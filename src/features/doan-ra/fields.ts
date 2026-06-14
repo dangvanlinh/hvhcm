@@ -66,6 +66,7 @@ export const DOAN_RA_CONFIG: EntityConfig = {
     },
 
     { key: "danhNghia", column: "danh_nghia", label: "Danh nghĩa / Tên đoàn", type: "text", section: 2, required: true, inTable: true, searchable: true, placeholder: "Tên đoàn ra" },
+    { key: "quocGiaCongTac", column: "quoc_gia_den_cong_tac", label: "Quốc gia đến công tác", type: "text", section: 2, inTable: true, searchable: true, placeholder: "Tên quốc gia" },
     { key: "cap", column: "cap", label: "Cấp", type: "select", section: 2, options: CAP_RA_OPTIONS, inTable: true, searchable: true, badge: "accent" },
 
     { key: "tdHoTen", column: "td_ho_ten", label: "Họ & tên", type: "text", section: 3, group: "Trưởng đoàn", inTable: true, searchable: true },
