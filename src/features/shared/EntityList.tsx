@@ -310,18 +310,18 @@ function DetailModal({
 
   return (
     <div
-      className="fixed inset-0 bg-ink/40 flex items-start justify-center p-6 overflow-y-auto z-50 animate-fade"
+      className="fixed inset-0 bg-ink/70 flex items-center justify-center p-3 sm:p-6 z-50 animate-fade"
       onClick={onClose}
     >
       <div
-        className="bg-card rounded-2xl w-full max-w-xl my-6 shadow-xl animate-pop"
+        className="bg-card rounded-2xl w-full max-w-2xl max-h-[92vh] flex flex-col shadow-xl animate-pop"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex items-center justify-between px-5 py-4 border-b border-line">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-line shrink-0">
           <h3 className="font-serif text-lg font-semibold">Chi tiết {config.label}</h3>
-          <button onClick={onClose} className="text-neutral-400 hover:text-ink text-xl leading-none">✕</button>
+          <button onClick={onClose} className="text-neutral-400 hover:text-ink text-2xl leading-none">✕</button>
         </div>
-        <div className="px-5 py-4 space-y-4 max-h-[70vh] overflow-y-auto">
+        <div className="px-6 py-5 space-y-5 overflow-y-auto flex-1">
           {groups.map((g, i) => (
             <div key={i}>
               <h4 className="font-serif text-sm font-semibold text-accent mb-2">{g.title}</h4>
