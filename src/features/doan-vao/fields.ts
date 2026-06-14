@@ -7,23 +7,13 @@
 
 import type { EntityConfig } from "../shared/fieldTypes";
 import { QUOC_GIA_OPTIONS } from "../shared/countries";
+import { DON_VI_HV_OPTIONS } from "../shared/donVi";
 
 const CAP_OPTIONS = ["A", "B", "C"] as const;
 const NOI_DUNG_OPTIONS = [
   "Tiếp xã giao",
   "Làm việc",
   "Toạ đàm/Hội nghị, hội thảo",
-] as const;
-
-// TODO: thay bằng danh sách đơn vị thật trong HV, hoặc lấy động từ bảng `don_vi`.
-const DON_VI_OPTIONS = [
-  "Phòng Hợp tác Quốc tế",
-  "Văn phòng Học viện",
-  "Phòng Đào tạo",
-  "Phòng Khoa học & Công nghệ",
-  "Phòng Tổ chức Cán bộ",
-  "Khoa Quốc tế học",
-  "Trung tâm Thông tin – Thư viện",
 ] as const;
 
 export const DOAN_VAO_CONFIG: EntityConfig = {
@@ -61,7 +51,7 @@ export const DOAN_VAO_CONFIG: EntityConfig = {
     { key: "soNguoi", column: "so_nguoi", label: "Số người", type: "number", section: 4, group: "Thành phần đoàn", inTable: true },
     { key: "dsThanhVien", column: "ds_thanh_vien_path", label: "DS thành viên đoàn", type: "file", section: 4, group: "Thành phần đoàn" },
 
-    { key: "donViChuanBi", column: "don_vi_chuan_bi", label: "Đơn vị chuẩn bị", type: "search", section: 5, options: DON_VI_OPTIONS, inTable: true, searchable: true, placeholder: "Tên đơn vị trong HV" },
+    { key: "donViChuanBi", column: "don_vi_chuan_bi", label: "Đơn vị chuẩn bị", type: "search", section: 5, options: DON_VI_HV_OPTIONS, inTable: true, searchable: true, placeholder: "Gõ để tìm & chọn đơn vị" },
     { key: "chuTriTiep", column: "chu_tri_tiep", label: "Chủ trì tiếp (tên)", type: "text", section: 5, searchable: true },
     { key: "noiDung", column: "noi_dung", label: "Nội dung", type: "select", section: 5, options: NOI_DUNG_OPTIONS, inTable: true, searchable: true, badge: "amber" },
 
