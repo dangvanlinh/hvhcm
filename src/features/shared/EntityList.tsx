@@ -13,6 +13,26 @@ const fmtDate = (s: any) => {
   return d && m && y ? `${d}-${m}-${y}` : s;
 };
 
+// Bề rộng tối thiểu/tối đa hợp lý theo loại cột để bảng cân đối, không bị bóp chật.
+function colDims(f: FieldDef): React.CSSProperties {
+  if (primaryColumn(f) === "danh_nghia") return { minWidth: 190, maxWidth: 240 };
+  switch (f.type) {
+    case "date":
+    case "date-range":
+      return { minWidth: 116, whiteSpace: "nowrap" };
+    case "select":
+      return { minWidth: 84 };
+    case "number":
+      return { minWidth: 64, whiteSpace: "nowrap" };
+    case "multi-select":
+    case "multi-search":
+    case "multi-text":
+      return { minWidth: 150, maxWidth: 230 };
+    default:
+      return { minWidth: 120, maxWidth: 200 };
+  }
+}
+
 export default function EntityList({
   config,
   refreshKey,
@@ -179,7 +199,7 @@ export default function EntityList({
               <thead>
                 <tr className="bg-neutral-50/70 text-left text-xs font-semibold text-neutral-500 uppercase tracking-wide border-b border-line">
                   {cols.map((c) => (
-                    <th key={c.key} className="px-3.5 py-2.5 whitespace-nowrap">{c.label}</th>
+                    <th key={c.key} className="px-3.5 py-2.5 whitespace-nowrap" style={{ minWidth: colDims(c).minWidth }}>{c.label}</th>
                   ))}
                   <th className="px-3.5 py-2.5"></th>
                 </tr>
@@ -188,7 +208,7 @@ export default function EntityList({
                 {filtered.map((r) => (
                   <tr key={r.id} className="border-b border-line/50 last:border-0 hover:bg-neutral-50/60 transition">
                     {cols.map((c) => (
-                      <td key={c.key} className="px-3.5 py-2.5 align-top">
+                      <td key={c.key} className="px-3.5 py-3 align-top leading-snug break-words" style={colDims(c)}>
                         <Cell def={c} row={r} />
                       </td>
                     ))}
