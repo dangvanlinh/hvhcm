@@ -5,6 +5,7 @@ export interface DoanVao {
   id: string;
   thoi_gian: string | null;
   danh_nghia: string;
+  quoc_gia_den: string | null;
   cap: "A" | "B" | "C" | null;
   td_ho_ten: string | null;
   td_co_quan: string | null;

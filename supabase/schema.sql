@@ -30,6 +30,7 @@ create table if not exists public.doan_vao (
   id                  uuid primary key default gen_random_uuid(),
   thoi_gian           date,
   danh_nghia          text not null,
+  quoc_gia_den        text,
   cap                 cap_doan,
   td_ho_ten           text,
   td_co_quan          text,
@@ -47,6 +48,9 @@ create table if not exists public.doan_vao (
 );
 
 create index if not exists doan_vao_created_at_idx on public.doan_vao (created_at desc);
+
+-- Bổ sung cột cho bảng đã tồn tại (an toàn chạy lại nhiều lần)
+alter table public.doan_vao add column if not exists quoc_gia_den text;
 
 -- ── Bảng Đoàn ra ──────────────────────────────────────────────────────────
 create table if not exists public.doan_ra (
