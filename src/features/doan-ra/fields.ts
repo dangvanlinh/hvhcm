@@ -4,6 +4,7 @@
 // ─────────────────────────────────────────────────────────────────────────
 
 import type { EntityConfig } from "../shared/fieldTypes";
+import { QUOC_GIA_OPTIONS } from "../shared/countries";
 
 const CAP_RA_OPTIONS = ["Cấp Thứ trưởng", "Cấp Vụ - Viện"] as const;
 
@@ -18,23 +19,6 @@ const NOI_DUNG_RA_OPTIONS = [
   "Thăm làm việc, kết nối hợp tác",
   "Đào tạo, bồi dưỡng",
   "Nghiên cứu, khảo sát",
-] as const;
-
-// Danh sách quốc gia (tiếng Việt) cho trường "Quốc gia đến công tác".
-const QUOC_GIA_OPTIONS = [
-  "Lào", "Campuchia", "Thái Lan", "Trung Quốc", "Nhật Bản", "Hàn Quốc",
-  "Singapore", "Malaysia", "Indonesia", "Philippines", "Myanmar", "Brunei",
-  "Đông Timor", "Ấn Độ", "Nga", "Hoa Kỳ", "Canada", "Anh", "Pháp", "Đức",
-  "Ý", "Tây Ban Nha", "Bồ Đào Nha", "Hà Lan", "Bỉ", "Thụy Sĩ", "Áo",
-  "Thụy Điển", "Na Uy", "Đan Mạch", "Phần Lan", "Ireland", "Ba Lan",
-  "Séc", "Slovakia", "Hungary", "Romania", "Bulgaria", "Hy Lạp", "Croatia",
-  "Ukraina", "Belarus", "Thổ Nhĩ Kỳ", "Israel", "Ả Rập Xê Út",
-  "Các Tiểu vương quốc Ả Rập Thống nhất", "Qatar", "Kuwait", "Iran", "Iraq",
-  "Jordan", "Liban", "Ai Cập", "Maroc", "Algeria", "Tunisia", "Nam Phi",
-  "Nigeria", "Kenya", "Ethiopia", "Tanzania", "Úc", "New Zealand",
-  "Brazil", "Argentina", "Chile", "Mexico", "Cuba", "Peru", "Colombia",
-  "Venezuela", "Pakistan", "Bangladesh", "Sri Lanka", "Nepal", "Mông Cổ",
-  "Kazakhstan", "Uzbekistan", "Azerbaijan", "Đài Loan (TQ)", "Hồng Kông (TQ)",
 ] as const;
 
 // TODO: thay bằng danh sách đơn vị thật trong HV, hoặc lấy động từ bảng `don_vi`.

@@ -6,6 +6,7 @@
 // ─────────────────────────────────────────────────────────────────────────
 
 import type { EntityConfig } from "../shared/fieldTypes";
+import { QUOC_GIA_OPTIONS } from "../shared/countries";
 
 const CAP_OPTIONS = ["A", "B", "C"] as const;
 const NOI_DUNG_OPTIONS = [
@@ -50,7 +51,7 @@ export const DOAN_VAO_CONFIG: EntityConfig = {
     { key: "thoiGian", column: "thoi_gian", label: "Thời gian", type: "date", section: 1, required: true, inTable: true },
 
     { key: "danhNghia", column: "danh_nghia", label: "Danh nghĩa đoàn", type: "text", section: 2, required: true, inTable: true, searchable: true, placeholder: "Tên / danh nghĩa của đoàn" },
-    { key: "quocGiaDen", column: "quoc_gia_den", label: "Quốc gia đến", type: "text", section: 2, inTable: true, searchable: true, placeholder: "Tên quốc gia" },
+    { key: "quocGiaDen", column: "quoc_gia_den", label: "Quốc gia", type: "search", section: 2, options: QUOC_GIA_OPTIONS, inTable: true, searchable: true, placeholder: "Gõ để tìm & chọn quốc gia" },
     { key: "cap", column: "cap", label: "Cấp", type: "select", section: 2, options: CAP_OPTIONS, inTable: true, searchable: true, badge: "accent" },
 
     { key: "tdHoTen", column: "td_ho_ten", label: "Họ & tên", type: "text", section: 3, group: "Trưởng đoàn", inTable: true, searchable: true },
