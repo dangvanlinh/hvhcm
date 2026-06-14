@@ -5,6 +5,7 @@
 
 import type { EntityConfig } from "../shared/fieldTypes";
 import { QUOC_GIA_OPTIONS } from "../shared/countries";
+import { DON_VI_HV_OPTIONS } from "../shared/donVi";
 
 const CAP_RA_OPTIONS = ["Cấp Thứ trưởng", "Cấp Vụ - Viện"] as const;
 
@@ -19,17 +20,6 @@ const NOI_DUNG_RA_OPTIONS = [
   "Thăm làm việc, kết nối hợp tác",
   "Đào tạo, bồi dưỡng",
   "Nghiên cứu, khảo sát",
-] as const;
-
-// TODO: thay bằng danh sách đơn vị thật trong HV, hoặc lấy động từ bảng `don_vi`.
-const DON_VI_OPTIONS = [
-  "Phòng Hợp tác Quốc tế",
-  "Văn phòng Học viện",
-  "Phòng Đào tạo",
-  "Phòng Khoa học & Công nghệ",
-  "Phòng Tổ chức Cán bộ",
-  "Khoa Quốc tế học",
-  "Trung tâm Thông tin – Thư viện",
 ] as const;
 
 export const DOAN_RA_CONFIG: EntityConfig = {
@@ -77,7 +67,7 @@ export const DOAN_RA_CONFIG: EntityConfig = {
     { key: "soNguoi", column: "so_nguoi", label: "Số người", type: "number", section: 4, group: "Thành phần đoàn", inTable: true },
     { key: "dsThanhVien", column: "ds_thanh_vien_path", label: "DS thành viên đoàn", type: "file", section: 4, group: "Thành phần đoàn" },
 
-    { key: "donViChuTri", column: "don_vi_chu_tri", label: "Đơn vị chủ trì", type: "search", section: 5, options: DON_VI_OPTIONS, inTable: true, searchable: true, placeholder: "Tên đơn vị trong HV" },
+    { key: "donViChuTri", column: "don_vi_chu_tri", label: "Đơn vị chủ trì", type: "search", section: 5, options: DON_VI_HV_OPTIONS, inTable: true, searchable: true, placeholder: "Gõ để tìm & chọn đơn vị" },
 
     { key: "nguonKinhPhi", column: "nguon_kinh_phi", label: "Nguồn kinh phí", type: "multi-select", section: 6, options: NGUON_KP_OPTIONS, searchable: true },
     { key: "nguonKinhPhiKhac", column: "nguon_kinh_phi_khac", label: "Khác — ghi rõ (nếu chọn \"Khác\")", type: "text", section: 6, placeholder: "Mô tả nguồn kinh phí khác", fullWidth: true },
