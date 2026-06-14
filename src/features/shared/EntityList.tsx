@@ -25,6 +25,7 @@ export default function EntityList({
   const [loading, setLoading] = useState(true);
   const [q, setQ] = useState("");
   const [filters, setFilters] = useState<Record<string, string>>({});
+  const [dateF, setDateF] = useState<{ y: string; m: string; d: string }>({ y: "", m: "", d: "" });
   const [detail, setDetail] = useState<Row | null>(null);
   const [pendingDel, setPendingDel] = useState<Row | null>(null);
 
@@ -48,12 +49,41 @@ export default function EntityList({
     [config]
   );
 
+  // Cột ngày để lọc theo năm/tháng/ngày (trường date hoặc date-range đầu tiên).
+  const dateCols = useMemo(() => {
+    const f = config.fields.find((x) => x.type === "date-range" || x.type === "date");
+    if (!f) return [];
+    return Array.isArray(f.column) ? f.column : [f.column];
+  }, [config]);
+
+  const years = useMemo(() => {
+    const set = new Set<string>();
+    for (const r of rows)
+      for (const c of dateCols) {
+        const v = r[c];
+        if (typeof v === "string" && v.length >= 4) set.add(v.slice(0, 4));
+      }
+    return [...set].sort((a, b) => b.localeCompare(a));
+  }, [rows, dateCols]);
+
   const filtered = useMemo(() => {
     const t = q.trim().toLowerCase();
     return rows
       .filter((r) =>
         Object.entries(filters).every(([col, v]) => !v || r[col] === v)
       )
+      .filter((r) => {
+        if (!dateF.y && !dateF.m && !dateF.d) return true;
+        return dateCols.some((c) => {
+          const v = r[c];
+          if (typeof v !== "string" || v.length < 10) return false;
+          const [y, m, d] = v.split("-");
+          if (dateF.y && y !== dateF.y) return false;
+          if (dateF.m && Number(m) !== Number(dateF.m)) return false;
+          if (dateF.d && Number(d) !== Number(dateF.d)) return false;
+          return true;
+        });
+      })
       .filter((r) => {
         if (!t) return true;
         return searchKeys.some((k) => {
@@ -62,7 +92,7 @@ export default function EntityList({
           return String(v ?? "").toLowerCase().includes(t);
         });
       });
-  }, [rows, q, filters, searchKeys]);
+  }, [rows, q, filters, searchKeys, dateF, dateCols]);
 
   async function confirmDelete() {
     if (!pendingDel) return;
@@ -96,6 +126,38 @@ export default function EntityList({
             {f.options.map((o) => <option key={o} value={o}>{o}</option>)}
           </select>
         ))}
+        {dateCols.length > 0 && (
+          <>
+            <select
+              value={dateF.y}
+              onChange={(e) => setDateF((s) => ({ ...s, y: e.target.value }))}
+              className="px-3 py-2.5 rounded-lg border border-line bg-white text-sm min-w-[110px]"
+            >
+              <option value="">Mọi năm</option>
+              {years.map((y) => <option key={y} value={y}>Năm {y}</option>)}
+            </select>
+            <select
+              value={dateF.m}
+              onChange={(e) => setDateF((s) => ({ ...s, m: e.target.value }))}
+              className="px-3 py-2.5 rounded-lg border border-line bg-white text-sm min-w-[110px]"
+            >
+              <option value="">Mọi tháng</option>
+              {Array.from({ length: 12 }, (_, i) => i + 1).map((m) => (
+                <option key={m} value={m}>Tháng {m}</option>
+              ))}
+            </select>
+            <select
+              value={dateF.d}
+              onChange={(e) => setDateF((s) => ({ ...s, d: e.target.value }))}
+              className="px-3 py-2.5 rounded-lg border border-line bg-white text-sm min-w-[110px]"
+            >
+              <option value="">Mọi ngày</option>
+              {Array.from({ length: 31 }, (_, i) => i + 1).map((d) => (
+                <option key={d} value={d}>Ngày {d}</option>
+              ))}
+            </select>
+          </>
+        )}
       </div>
 
       <div className="bg-card border border-line rounded-2xl overflow-hidden">
